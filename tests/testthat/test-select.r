@@ -55,3 +55,10 @@ test_that("select preserves grouping vars", {
 
   expect_named(out, c("b", "a"))
 })
+
+test_that("supports .data pronoun (dbplyr#132)",{
+  df <- memdb_frame(x = 1, y = 2) %>%
+    select( .data$x ) %>%
+    collect()
+  expect_equal( df, tibble(x = 1) )
+})

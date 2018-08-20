@@ -30,3 +30,15 @@ test_that("distinct throws error if column is specified and .keep_all is TRUE", 
     "specified columns.*[.]keep_all"
   )
 })
+
+test_that("supports .data pronoun (dbplyr#132)",{
+  dfs %>%
+    map(. %>% distinct( .data$x, .data$y ) ) %>%
+    expect_equal_tbls( df %>% distinct( .data$x, .data$y ) )
+})
+
+test_that("selects by RHS of named arguments (dbplyr#132)",{
+  dfs %>%
+    map(. %>% distinct( v = y ) ) %>%
+    expect_equal_tbls( df %>% distinct( v = y ) )
+})

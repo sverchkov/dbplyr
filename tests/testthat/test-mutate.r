@@ -64,6 +64,13 @@ test_that("supports overwriting variables (#3222)", {
   expect_equal(df, tibble(x = 1, y = 5))
 })
 
+test_that("supports .data pronoun (dbplyr#132)",{
+  df <- memdb_frame(x = 1, y = 2) %>%
+    mutate( z = .data$x + .data$y ) %>%
+    collect()
+  expect_equal(df, tibble(x = 1, y = 2, z = 3))
+})
+
 # SQL generation -----------------------------------------------------------
 
 test_that("mutate calls windowed versions of sql functions", {
